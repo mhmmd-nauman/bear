@@ -5,7 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title>Laravel</title>
+    <title>My First Project In Laravel</title>
 
     <!-- Fonts -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.5.0/css/font-awesome.min.css" integrity="sha384-XdYbMnZ/QjLh6iI4ogqCTaIjrFk87ip+ekIjefZch0Y+PvJ8CDYtEs1ipDmPorQ+" crossorigin="anonymous">
@@ -69,7 +69,6 @@
                                 </ul>
                          </div>
                     </li>
-                  
                     <li style=" color: white; font-size: 23px;width: 33%;">
                         <div style=" float: right; ">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown"  style=" color: white; font-size: 23px; float: right" role="button" aria-expanded="false">

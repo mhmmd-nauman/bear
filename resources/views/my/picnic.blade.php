@@ -9,6 +9,7 @@
           }  
     </style>
 @section('content')
+
                 <button type="button" class="btn btn-danger btn-lg" data-toggle="modal" data-target="#myModal">Insert Picnic Record</button>
 
     <div class=" container">
@@ -40,6 +41,10 @@
 
                     </div>
             </div>
+
+<button type="button" class="btn btn-danger glyphicon glyphicon-star"  style=" margin-left: 70%" >Insert New Picnic</button>
+<div class=" container">
+
             <table style="margin-top: 5%; " class="table table-hover" >
                         <tr>
                             <th >ID</th>
@@ -47,6 +52,10 @@
                             <th >Taste_level</th>
                             <th>Edit / Delete</th>
                         </tr>
+                        <?php
+                        $users=json_decode($data);
+                        //print_r($users) ;
+                    ?>
                     <?php foreach ($users as $user):?>
                         <tr>
                             <td><?php echo $user->id;?></td>

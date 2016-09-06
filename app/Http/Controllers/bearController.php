@@ -1,7 +1,6 @@
 <?php
-
 namespace App\Http\Controllers;
-
+use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Http\Request;
 use DB; 
 use App\Http\Requests;
@@ -10,38 +9,45 @@ use App\Http;
 
 class bearController extends Controller
 {
-    //
     public function getbear(){
-        $users = DB::table('bears')->get();
-        return view('my.print', compact('users'));
-    }
-     public function getpicnic(){
-        $users = DB::table('picnics')->get();
+         $bears = DB::table('bears')->get();
+         $dat=json_encode($bears);
+         return view('my.print',['data'=>$dat]);
 
-        return view('my.picnic', ['users' => $users]);
+    }
+//     public function getbear_json(){
+//          $bears = DB::table('bears')->get();
+////        print_r($users);
+////        echo json_encode($bears);
+////        print_r( json_decode(json_encode($bears)));
+//          $dat=json_encode($bears);
+//          return view('my.print',['data'=>$dat]);
+//    }
+     public function getpicnic(){
+         $bears = DB::table('picnics')->get();
+         $dat=json_encode($bears);
+         return view('my.picnic',['data'=>$dat]);
     }
      public function getfish(){
-        $users = DB::table('fish1')->get();
-
-        return view('my.fish', ['users' => $users]);
+         $bears = DB::table('fish')->get();
+         $dat=json_encode($bears);
+         return view('my.fish',['data'=>$dat]);
+         
     }
      public function gettree(){
-        $users = DB::table('trees')->get();
-
-        return view('my.trees', ['users' => $users]);
+         $bears = DB::table('trees')->get();
+         $dat=json_encode($bears);
+         return view('my.trees',['data'=>$dat]);
     }
     
     public function add_bear(Request $request){
-        $bear = new Bear;
-        
+        $bear = new Bear;        
         $bear->name =$request->get('name');
         $bear->type = $request->get('type');
         $bear->danger_level=$request->get('level');
         $bear->save();
         return back();
     }
-//    public function missingMethod($parameters = array()) {
-//        parent::missingMethod($parameters);
-//    }
+
 
 }

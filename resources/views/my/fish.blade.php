@@ -4,31 +4,32 @@
 <style>
         .table-hover tbody tr:hover td, .table-hover tbody tr:hover th {
             background-color: #ac2925;
-          }  
+          } 
+         
     </style>
 
 @section('content')
-<div class=" container">
-            <table style="margin-top: 5%; " class="table table-hover" >
+<div class=" container" >
+            <table style="margin-top: 5%; " class="table table-hover"  >
                         <tr>
                             <th >ID</th>
                             <th >weight</th>
                             <th >bear_id</th>
                             <th>Edit / Delete</th>
                         </tr>
+                        <?php
+                        $users=json_decode($data);
+                        //print_r($users) ;
+                    ?>
                     <?php foreach ($users as $user){?>
                         <tr>
                             <td><?php echo $user->id;?></td>
                             <td><?php echo $user->weight ; ?></td>
                             <td> <?php echo $user->bear_id	; ?></td>
                            <td><button class="btn btn-danger glyphicon glyphicon-refresh">Edit</button> &nbsp;&nbsp;<button class="btn btn-danger glyphicon glyphicon-remove">Remove</button>
-
-
-                        </tr>
-                        
+                        </tr>                      
                     <?php } ?>
-             </table>
-    
+             </table>    
 </div>
 @endsection
 

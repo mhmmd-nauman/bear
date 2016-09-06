@@ -8,6 +8,7 @@
     </style>
 
 @section('content')
+<div><button type="button" class="btn btn-danger glyphicon glyphicon-star"  style=" margin-left: 70%" >Insert New Picnic</button></div>
 <div class=" container">
             <table style="margin-top: 5%; " class="table table-hover" >
                         <tr>
@@ -17,6 +18,10 @@
                             <th>bear_id</th>
                             <th>Edit / Delete</th>
                         </tr>
+                        <?php
+                        $users=json_decode($data);
+                        //print_r($users) ;
+                    ?>
                     <?php foreach ($users as $user):?>
                         <tr>
                             <td><?php echo $user->id;?></td>
