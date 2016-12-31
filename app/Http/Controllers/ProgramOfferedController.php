@@ -26,6 +26,7 @@ class ProgramOfferedController extends Controller
             $program = new ProgramOffered();
         }
         $program->program_name = $request->get('program_name');
+        $program->code = $request->get('code');
         $program->duration  = $request->get('duration');
         $program->status    = $request->get('status');
         $program->department_id    = $request->get('department');

@@ -241,7 +241,7 @@ $('#confirmDelete').on('show.bs.modal', function (e) {
                             <li role = "presentation" class = "divider"></li>
 
                             <li role = "presentation">
-                               <a role = "menuitem" tabindex = "-1" href = "{{url('/student')}}">Only Today - Mine</a>
+                               <a role = "menuitem" tabindex = "-1" href = "{{url('/student?load=today')}}">Only Today - Mine</a>
                             </li>
                             <li role = "presentation">
                                <a role = "menuitem" tabindex = "-1" href = "{{url('/student?load=viewalldata')}}">View All Data</a>
@@ -281,7 +281,7 @@ $('#confirmDelete').on('show.bs.modal', function (e) {
                             <th style=" width: 5%;">App#</th>
                             <th style=" width: 10%;">Date</th>
                             <th>Name</th>
-                            <th style=" width: 10%;">Roll#</th>
+                            <th style=" width: 10%;">Registration#</th>
                             <th style=" width: 5%;">Program</th>
                             <th style=" width: 10%;">Admission</th>
                             <!--

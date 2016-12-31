@@ -54,12 +54,12 @@
                     <nav class = "navbar navbar-default col-md-9" role = "navigation">
    
                     <div class = "navbar-header">
-                       <a class = "navbar-brand" href = "{{url('/')}}" style="color:white;">Project-A3I</a>
+                       <a class = "navbar-brand" href = "{{url('/')}}" style="color:white;">{!! env('PROJECT_NAME') !!}-{!! env('APP_NAME') !!}</a>
                     </div>
 
                     <div>
                        <ul class = "nav navbar-nav pull-right">
-                           <li><a href = "#" style="color:white;">System</a></li>
+                           <li><a href = "{{url('/')}}" style="color:white;">System</a></li>
                            <li><a href = "#" style="color:white;">Settings</a></li>
 
                           <li class = "dropdown">

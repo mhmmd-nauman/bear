@@ -5,6 +5,7 @@ function crearform(){
     $("#program_edit_id").val("");
     $("#program_id").val("");
     $("#program_name").val("");
+    $("#code").val("");
     $("#duration").val("1").change();
     
 }
@@ -59,6 +60,7 @@ $('#confirmDelete').on('show.bs.modal', function (e) {
         $.getJSON( "program_in_json?id="+id, function( json ) {
                 //$("#program_id").val(json.id);
                 $("#program_name").val(json.program_name);
+                $("#code").val(json.code);
                 $("#duration").val(json.duration).change();
                 $("#department").val(json.department_id).change();
                 //$.each( json, function( key, val ) {
@@ -103,6 +105,7 @@ $('#confirmDelete').on('show.bs.modal', function (e) {
                             <th style=" width: 10%;">ID</th>
                             
                             <th>Name</th>
+                            <th>Code</th>
                             <th>Department</th>
                             <th style=" width: 15%;">Duration</th>
                             
@@ -115,6 +118,7 @@ $('#confirmDelete').on('show.bs.modal', function (e) {
                         <tr >
                             <td> <?php echo $program->id;?></td>
                             <td> <?php echo $program->program_name; ?></td>
+                            <td> <?php echo $program->code; ?></td>
                             <td> <?php echo $program->department->department_name; ?></td>
                             <td> <?php echo $program->duration; ?> Year(s)</td>
                             
@@ -187,8 +191,6 @@ $('#confirmDelete').on('show.bs.modal', function (e) {
 
                                    <div class = "col-md-7">
                                        <select name="department" id="department" class="form-control input-sm">
-                                           <option value="1">Computer Science</option>
-                                           <option value="2">MBA</option>
                                            
                                        </select>
                                    </div>
@@ -215,7 +217,22 @@ $('#confirmDelete').on('show.bs.modal', function (e) {
                                  </div>
                               </td>
                           </tr>
-                          
+                          <tr>
+                              <td >
+                                  <div class = "form-group">
+                                    <label for = "firstname" class = "col-md-4 control-label">
+                                         {{ Form::label('title','Program Code:')}}
+                                    </label>
+
+                                   <div class = "col-md-7">
+                                       {{ Form::text('code',null,array('id'=>'code','class' => 'form-control input-sm','placeholder'=>'Enter Program Code','required'=>'true'))}}
+                                   </div>
+                                </div>
+                              </td>
+                              <td>
+                                  &nbsp;
+                              </td>
+                          </tr>
                           <tr>
                               <td class="col-md-12" colspan="2">
                                   <div class = "col-md-offset-5 col-md-5">

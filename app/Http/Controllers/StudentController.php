@@ -98,11 +98,16 @@ class StudentController extends Controller
                 $report_title = 'View All Data';
                 $students = Student::all();
                 break;
-            default:
+            case'today':
                 $report_title = 'Today - Mine';
                 $students = Student::where('dealtby_id','=',$user_id)
                    // ->where('admission_status','=','Accepted')
                     ->whereDate('created_at', '=', date('Y-m-d'))->get();
+                break;
+            default:
+                $report_title = 'View All Data';
+                $students = Student::all();
+                
         }
         
         return view('students.list_students', compact('students'),['report_title'=>$report_title]);
@@ -123,9 +128,24 @@ class StudentController extends Controller
                     ->where('roll_number','like',"%$student_program_code%")
                     ->where('semester','=',$request->get('semester'))
                     ->orderBy('id', 'desc')->count();
+            //echo "here $results";
+            //exit;
+            $semester_code = "";
+            switch($request->get('semester')){
+                case"Spring":
+                    $semester_code = 1;
+                    break;
+                case"Fall":
+                    $semester_code = 2;
+                    break;
+                default:
+                    $semester_code = 3;
+                    
+            }
             if(empty($results)){
                 // issue the first
-                $next_roll_number = $student_program_code.date("y")."0001";
+                 $next_roll_number = $student_program_code.date("y").$semester_code."0001";
+                //exit;
             }else{
                  $last_roll_number = Student::whereYear("admission_date","=",date("Y"))
                     ->where('roll_number','like',"%$student_program_code%")
@@ -149,7 +169,7 @@ class StudentController extends Controller
                             $next_roll_number .= $last_four_characters;
                      break;
                  }
-                $next_roll_number = $student_program_code.date("y").$next_roll_number;
+                $next_roll_number = $student_program_code.date("y").$semester_code.$next_roll_number;
             }
             
             $student->roll_number = $next_roll_number;
@@ -191,7 +211,11 @@ class StudentController extends Controller
         $student->sponsor_sign_date = date("Y-m-d",  strtotime($request->get('sponsor_sign_date')));
         // end of tab 4
         $student->admission_status = $request->get('admission_status');
-        $student->admission_date = date("Y-m-d",  strtotime($request->get('admission_date')));
+        $admission_date = date("Y-m-d",  strtotime($request->get('admission_date')));
+        if($request->get('admission_status') == "Accepted" && $request->get('admission_date') == ""){
+            $admission_date = date("Y-m-d");
+        }
+        $student->admission_date = $admission_date;
         $student->interviewed_by = $request->get('interviewed_by');
         $student->chairman_admission_committee = $request->get('chairman_admission_committee');
         $student->fee_code = $request->get('fee_code');
