@@ -18,6 +18,12 @@
 
 
 Route::group(['middleware' => ['web']], function () {
+    
+     Route::get('/notify',function(){
+                session()->flash('msg','Hey, You have a message to read');
+                return redirect()->to('/student');
+            });
+    
     Route::get('/', 'HomeController@index');
     Route::get('/visitor-export-pdf', 'VisitorController@export_visitor_pdf');
 
@@ -64,9 +70,6 @@ Route::group(['middleware' => ['web']], function () {
     Route::get('/tree','bearController@gettree');
     Route::post('/submit','bearController@add_bear');
 });
-
-
-Route::auth();
 
 
 Route::group(['middleware' => ['auth']], function() {

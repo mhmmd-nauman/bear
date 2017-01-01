@@ -1,5 +1,6 @@
 @extends('layouts.app')
 @section('content')
+@include('partials.messages')
 <script>
 function crearform(){
     $("#student_id_edit").val("");

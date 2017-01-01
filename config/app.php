@@ -160,6 +160,7 @@ return [
         Maatwebsite\Excel\ExcelServiceProvider::class,
         Barryvdh\DomPDF\ServiceProvider::class,
         Barryvdh\Snappy\ServiceProvider::class,
+        Laracasts\Flash\FlashServiceProvider::class,
     ],
 
     /*
@@ -212,6 +213,7 @@ return [
         'PDF' => Barryvdh\DomPDF\Facade::class,
         'SnappyPDF' => Barryvdh\Snappy\Facades\SnappyPdf::class,
         'SnappyImage' => Barryvdh\Snappy\Facades\SnappyImage::class,
+        'Flash' => Laracasts\Flash\Flash::class,
     ],
 
 ];

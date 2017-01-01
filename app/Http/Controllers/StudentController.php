@@ -17,6 +17,7 @@ use Auth;
 use Excel;
 use PDF;
 use SnappyPDF;
+use Session;
 
 class StudentController extends Controller
 {
@@ -341,8 +342,10 @@ class StudentController extends Controller
         }
         
         $request->session()->flash('flash_message', 'Visitor was successful added!');
-        return redirect('student');
-        //return back();
+        //var_dump(session()->all());
+       // exit;
+         return redirect('student?success=1&message=Student was successful added!')->withInput() ;
+         //return redirect()->back()->withInput();
     }
     public function remove_student(Request $request){
         $request->student_id;
