@@ -25,8 +25,8 @@ class Student extends Model {
         return $this->hasMany('App\StudentLanguageRating');
     }
     
-    public function picnics() {
-        return $this->belongsToMany('App\Picnic', 'bears_picnics', 'bear_id', 'picnic_id');
+    public function courses() {
+        return $this->belongsToMany('App\Course', 'students_courses', 'student_id', 'course_id');
     }
 
 }

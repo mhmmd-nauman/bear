@@ -76,6 +76,7 @@
                                 <li><a href="#{{url('/admission')}}">Admissions</a></li>
                                 <li><a href="{{url('/department')}}">Department</a></li>
                                 <li><a href="{{url('/program')}}">Programs</a></li>
+                                <li><a href="{{url('/course')}}">Courses</a></li>
                                
                             </ul>
                              

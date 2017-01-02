@@ -50,7 +50,7 @@
             </a>
         </div>
         <div class="col-md-4 col-sm-6 col-xs-12">
-            <a href="{{url('/#')}}">
+            <a href="{{url('/course')}}">
             <button type=button class="btn btn-default btn-lg">
                 <span class="glyphicon glyphicon-book" aria-hidden=true></span>Courses Module
             </button> 

@@ -54,6 +54,14 @@ Route::group(['middleware' => ['web']], function () {
     Route::get('/department_in_json','DepartmentController@department_in_json');
     Route::get('/all_departments_in_json','DepartmentController@all_department_in_json');
     // end of department routes
+  
+    // course routes
+    Route::get('/course','CourseController@index');
+    Route::post('/add_course','CourseController@add_course');
+    Route::post('/remove_course','CourseController@remove_course');
+    Route::get('/course_in_json','CourseController@course_in_json');
+    Route::get('/all_courses_in_json','CourseController@all_courses_in_json');
+    // end of department routes
     
     // program routes
     Route::get('/program','ProgramOfferedController@index');
