@@ -27,50 +27,101 @@ class VisitorController extends Controller
                 $report_title = 'Yesterday - Mine';
                 $students = Visitor::where('dealtby_id','=',$user_id)
                     ->where('status','=','Info')
-                    ->whereDate('created_at', '=', date('Y-m-d',  strtotime("-1 day")))->get();
+                    ->whereDate('created_at', '=', date('Y-m-d',  strtotime("-1 day")))
+                    ->orderBy('id', 'desc') 
+                    ->get();
                 break;
             case'last7day':
                 $report_title = 'Last 7 Days - Mine';
                 $students = Visitor::where('dealtby_id','=',$user_id)
                         ->where('status','=','Info')
-                        ->whereDate('created_at', '>=', date('Y-m-d',  strtotime("-30 day")))->get();
+                        ->whereDate('created_at', '>=', date('Y-m-d',  strtotime("-30 day")))
+                        ->orderBy('id', 'desc')
+                        ->get();
                 break;
             case'last30day':
                 $report_title = 'Last 30 Days - Mine';
                 $students = Visitor::where('dealtby_id','=',$user_id)
                         ->where('status','=','Info')
-                        ->whereDate('created_at', '>=', date('Y-m-d',  strtotime("-7 day")))->get();
+                        ->whereDate('created_at', '>=', date('Y-m-d',  strtotime("-7 day")))
+                        ->orderBy('id', 'desc')
+                        ->get();
                 break;
             case'viewalldata':
                 $report_title = 'View All Data';
-                $students = Visitor::where('status','=','Info')->get();
+                $students = Visitor::where('status','=','Info')
+                        ->orderBy('id', 'desc')
+                        ->get();
                 break;
             default:
                 $report_title = 'Today - Mine';
                 $students = Visitor::where('dealtby_id','=',$user_id)
                         ->where('status','=','Info')
-                        ->whereDate('created_at', '=', date('Y-m-d'))->get();
+                        ->whereDate('created_at', '=', date('Y-m-d'))
+                        ->orderBy('id', 'desc')
+                        ->get();
         }
         //$students = DB::table('students')->get();
         return view('visitors.list_visitors', compact('students'),['report_title'=>$report_title]);
     }
     public function export_visitor_pdf(){
         $user_id = Auth::user()->id;
-        $students = DB::table('visitors')
-                ->where('dealtby_id','=',$user_id)
+        $students = Visitor::where('dealtby_id','=',$user_id)
                 ->get();
         $pdf = PDF::loadView('visitors.list_visitors_pdf', compact('students'));
         return $pdf->download('VisitrsReport.pdf');
     }
-    public function export_visitor(){
+    public function export_visitor(Request $request){
         //http://laraveldaily.com/laravel-excel-export-eloquent-models-results-easily/
         $user_id = Auth::user()->id;
-        $students = Visitor::select('id AS ID', 'first_name As First Name', 'last_name AS LastName','mobile As Contact','program as Program','visit_type as CallVisit','information_source as InformationSource','dealt_by as DealtBy','status As AdmissionStatus')
+        $report_title = 'Yesterday - Mine';
+        switch($request->load){
+            case'yesterday':
+                $report_title = 'Yesterday - Mine';
+                $students = Visitor::select('id AS ID', 'first_name As First Name', 'last_name AS LastName','mobile As Contact','program as Program','visit_type as CallVisit','information_source as InformationSource','dealt_by as DealtBy','status As AdmissionStatus')
                 ->where('dealtby_id','=',$user_id)
+                ->where('status','=','Info')
+                ->whereDate('created_at', '=', date('Y-m-d',  strtotime("-1 day")))
                 ->get();
+                break;
+            case'last7day':
+                $report_title = 'Last 7 Days - Mine';
+                $students = Visitor::select('id AS ID', 'first_name As First Name', 'last_name AS LastName','mobile As Contact','program as Program','visit_type as CallVisit','information_source as InformationSource','dealt_by as DealtBy','status As AdmissionStatus')
+                        ->where('dealtby_id','=',$user_id)
+                        ->where('status','=','Info')
+                        ->whereDate('created_at', '>=', date('Y-m-d',  strtotime("-30 day")))
+                        ->orderBy('id', 'desc')
+                        ->get();
+                break;
+            case'last30day':
+                $report_title = 'Last 30 Days - Mine';
+                $students = Visitor::select('id AS ID', 'first_name As First Name', 'last_name AS LastName','mobile As Contact','program as Program','visit_type as CallVisit','information_source as InformationSource','dealt_by as DealtBy','status As AdmissionStatus')
+                        ->where('dealtby_id','=',$user_id)
+                        ->where('status','=','Info')
+                        ->whereDate('created_at', '>=', date('Y-m-d',  strtotime("-7 day")))
+                        ->orderBy('id', 'desc')
+                        ->get();
+                break;
+            case'viewalldata':
+                $report_title = 'View All Data';
+                $students = Visitor::select('id AS ID', 'first_name As First Name', 'last_name AS LastName','mobile As Contact','program as Program','visit_type as CallVisit','information_source as InformationSource','dealt_by as DealtBy','status As AdmissionStatus')
+                        ->where('dealtby_id','=',$user_id)
+                        ->orderBy('id', 'desc')
+                        ->get();
+                break;
+            default:
+                $report_title = 'Today - Mine';
+               $students = Visitor::select('id AS ID', 'first_name As First Name', 'last_name AS LastName','mobile As Contact','program as Program','visit_type as CallVisit','information_source as InformationSource','dealt_by as DealtBy','status As AdmissionStatus')
+                       ->where('dealtby_id','=',$user_id) 
+                       ->where('status','=','Info')
+                        ->whereDate('created_at', '=', date('Y-m-d'))
+                        ->orderBy('id', 'desc')
+                        ->get();
+        }
+        
         $excel = App::make('excel');
-        Excel::create('visitors', function($excel) use($students) {
-            $excel->sheet('Visitors Data', function($sheet) use($students) {
+        Excel::create("$report_title", function($excel) use($students) {
+            $excel->sheet("Sheet One", function($sheet) use($students) {
                 $sheet->fromArray($students);
             });
         })->export('xls');
@@ -95,13 +146,15 @@ class VisitorController extends Controller
         $visitor->dealt_by   = Auth::user()->name;
         $visitor->status = 'Info';
         $visitor->save();
-        $request->session()->flash('flash_message', 'Visitor was successful added!');
-        return redirect('visitor');
+        //$request->session()->flash('flash_message', 'Visitor was added successfully!');
+        return redirect('visitor?success=1&message=Visitor was successful added!')->withInput() ;
+        //return redirect('visitor');
         //return back();
     }
     public function remove_visitor(Request $request){
          Visitor::destroy($request->visitor_id);
-         $request->session()->flash('flash_message', 'Visitor was successful removed!');
-         return back();
+         //$request->session()->flash('flash_message', 'Visitor was successful removed!');
+         return redirect('visitor?success=1&message=Visitor was removed successfully!')->withInput() ;
+         //return back();
     }
 }

@@ -33,14 +33,16 @@ class CourseController extends Controller
         //later needs to be fix when we have hod roles
         //$department->hod_id   = Auth::user()->id;
         $course->save();
-        $request->session()->flash('flash_message', 'Course was successful added!');
+        return redirect('course?success=1&message=Course was successfully added!')->withInput() ;
+        //$request->session()->flash('flash_message', 'Course was successful added!');
         
-        return back();
+        //return back();
     }
     public function remove_course(Request $request){
          Course::destroy($request->course_id);
-         $request->session()->flash('flash_message', 'Course was successful removed!');
-         return back();
+         //$request->session()->flash('flash_message', 'Course was successful removed!');
+         return redirect('course?success=1&message=Course was successfully removed!')->withInput() ;
+        //return back();
     }
     public function course_in_json(Request $request){
         return Course::find($request->id)->toJson();

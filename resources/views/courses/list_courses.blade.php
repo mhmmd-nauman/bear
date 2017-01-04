@@ -52,7 +52,7 @@ $('#confirmDelete').on('show.bs.modal', function (e) {
                 
            });
         });
-        $("#visitor_table").dataTable();
+        $("#visitor_table").dataTable( {"bSort": false});
     });
 </script>
 <style type="text/css">
@@ -119,7 +119,7 @@ $('#confirmDelete').on('show.bs.modal', function (e) {
               <div class="modal-content" style="height: 90%;min-height: 90%;height: auto;border-radius: 0;">
                   <div class="modal-header" style=" background-color: #ac2925; color: white; font-size: 23px;">
                       <button type="button" class="close" data-dismiss="modal"><span class=" glyphicon glyphicon-remove"></span></button>
-                  <h4 class="modal-title">Manage Department Record</h4>
+                  <h4 class="modal-title">Manage Courses Record</h4>
                 </div>
                   <div style="width:900px;">
                       {!! Form::Open(array ('url' => '/add_course','class'=>'form-horizontal')) !!}
@@ -133,7 +133,7 @@ $('#confirmDelete').on('show.bs.modal', function (e) {
 
                                    <div class = "col-md-7">
                                        <input type="hidden" name="course_edit_id" id="course_edit_id" value="">
-                                       {{ Form::text('name',null,array('id'=>'name','class' => 'form-control input-sm','placeholder'=>'Enter Department Name','required'=>'true'))}}
+                                       {{ Form::text('name',null,array('id'=>'name','class' => 'form-control input-sm','placeholder'=>'Enter Course Name','required'=>'true'))}}
 
                                    </div>
                                 </div>
@@ -145,7 +145,7 @@ $('#confirmDelete').on('show.bs.modal', function (e) {
                                     </label>
 
                                     <div class = "col-md-7">
-                                        {{ Form::text('code',null,array('id'=>'code','class' => 'form-control input-sm','placeholder'=>'Enter Department Contact'))}}
+                                        {{ Form::text('code',null,array('id'=>'code','class' => 'form-control input-sm','placeholder'=>'Enter Course Code'))}}
                                     </div>
                                  </div>
                               </td>

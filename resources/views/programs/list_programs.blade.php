@@ -73,7 +73,7 @@ $('#confirmDelete').on('show.bs.modal', function (e) {
            
            
         });
-        $("#visitor_table").dataTable();
+        $("#visitor_table").dataTable( {"bSort": false});
     });
 </script>
 <style type="text/css">

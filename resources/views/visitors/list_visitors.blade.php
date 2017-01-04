@@ -71,7 +71,7 @@ $('#confirmDelete').on('show.bs.modal', function (e) {
                 
            });
         });
-        $("#visitor_table").dataTable();
+        $("#visitor_table").dataTable( {"bSort": false});
     });
 </script>
 <style type="text/css">
@@ -142,11 +142,30 @@ $('#confirmDelete').on('show.bs.modal', function (e) {
                         </button>
                         <ul class = "dropdown-menu" role = "menu" aria-labelledby = "dropdownMenu1">
                             <li role = "presentation">
-                                <a  href="{{url('/visitor-export-excel')}}" target="_blank" role = "menuitem" tabindex = "-1">Export to Excel</a>
+                               <a role = "menuitem" tabindex = "-1" href = "{{url('/visitor-export-excel')}}"> <i class="fa fa-file-excel-o" aria-hidden="true"></i> Today</a>
+                            </li>
+
+                            <li role = "presentation">
+                               <a role = "menuitem" tabindex = "-1" href = "{{url('/visitor-export-excel?load=yesterday')}}"><i class="fa fa-file-excel-o" aria-hidden="true"></i> Yesterday</a>
+                            </li>
+                            <li role = "presentation">
+                               <a role = "menuitem" tabindex = "-1" href = "{{url('/visitor-export-excel?load=last7day')}}"> <i class="fa fa-file-excel-o" aria-hidden="true"></i> Last 7 Days</a>
+                            </li>
+                            <li role = "presentation">
+                               <a role = "menuitem" tabindex = "-1" href = "{{url('/visitor-export-excel?load=last30day')}}"> <i class="fa fa-file-excel-o" aria-hidden="true"></i> Last 30 Days</a>
+                            </li>
+
+                            <li role = "presentation" class = "divider"></li>
+
+                            <li role = "presentation">
+                               <a role = "menuitem" tabindex = "-1" href = "{{url('/visitor-export-excel')}}"> <i class="fa fa-file-excel-o" aria-hidden="true"></i> Only Mine</a>
+                            </li>
+                            <li role = "presentation">
+                               <a role = "menuitem" tabindex = "-1" href = "{{url('/visitor-export-excel?load=viewalldata')}}"> <i class="fa fa-file-excel-o" aria-hidden="true"></i> View All Data</a>
                             </li>
                             <li role = "presentation" class = "divider"></li>
                             <li role = "presentation">
-                               <a role = "menuitem" tabindex = "-1" href="{{url('/visitor-export-pdf')}}" target="_blank" >Export to PDF</a>
+                               <a role = "menuitem" tabindex = "-1" href="{{url('/visitor-export-pdf')}}" target="_blank" ><span class="glyphicon glyphicon-circle-arrow-down"></span>PDF</a>
                             </li>
                          </ul>
                     </div>

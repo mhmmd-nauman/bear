@@ -81,33 +81,41 @@ class StudentController extends Controller
                 $report_title = 'Yesterday - Mine';
                 $students = Student::where('dealtby_id','=',$user_id)
                    // ->where('admission_status','=','Accepted')
-                    ->whereDate('created_at', '=', date('Y-m-d',  strtotime("-1 day")))->get();
+                    ->whereDate('created_at', '=', date('Y-m-d',  strtotime("-1 day")))
+                    ->orderBy('id', 'desc') 
+                    ->get();
                 break;
             case'last7day':
                 $report_title = 'Last 7 Days - Mine';
                 $students = Student::where('dealtby_id','=',$user_id)
                    // ->where('admission_status','=','Accepted')
-                    ->whereDate('created_at', '>=', date('Y-m-d',  strtotime("-30 day")))->get();
+                    ->whereDate('created_at', '>=', date('Y-m-d',  strtotime("-30 day")))
+                    ->orderBy('id', 'desc') 
+                    ->get();
                 break;
             case'last30day':
                 $report_title = 'Last 30 Days - Mine';
                 $students = Student::where('dealtby_id','=',$user_id)
                   //  ->where('admission_status','=','Accepted')
-                    ->whereDate('created_at', '>=', date('Y-m-d',  strtotime("-7 day")))->get();
+                    ->whereDate('created_at', '>=', date('Y-m-d',  strtotime("-7 day")))
+                    ->orderBy('id', 'desc') 
+                    ->get();
                 break;
             case'viewalldata':
                 $report_title = 'View All Data';
-                $students = Student::all();
+                $students = Student::orderBy('id', 'desc')->get();
                 break;
             case'today':
                 $report_title = 'Today - Mine';
                 $students = Student::where('dealtby_id','=',$user_id)
                    // ->where('admission_status','=','Accepted')
-                    ->whereDate('created_at', '=', date('Y-m-d'))->get();
+                    ->whereDate('created_at', '=', date('Y-m-d'))
+                    ->orderBy('id', 'desc') 
+                    ->get();
                 break;
             default:
                 $report_title = 'View All Data';
-                $students = Student::all();
+                $students = Student::orderBy('id', 'desc')->get();
                 
         }
         
@@ -341,7 +349,7 @@ class StudentController extends Controller
             }
         }
         
-        $request->session()->flash('flash_message', 'Visitor was successful added!');
+        //$request->session()->flash('flash_message', 'Visitor was successful added!');
         //var_dump(session()->all());
        // exit;
          return redirect('student?success=1&message=Student was successful added!')->withInput() ;
@@ -350,8 +358,9 @@ class StudentController extends Controller
     public function remove_student(Request $request){
         $request->student_id;
         Student::destroy($request->student_id);
-        $request->session()->flash('flash_message', 'Visitor was successful removed!');
-        return back();
+        return redirect('student?success=1&message=Student was successfully removed!')->withInput() ;
+        //$request->session()->flash('flash_message', 'Visitor was successful removed!');
+        //return back();
     }
     
 }

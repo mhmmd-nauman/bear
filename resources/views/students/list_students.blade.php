@@ -200,7 +200,8 @@ $('#confirmDelete').on('show.bs.modal', function (e) {
             });
            
         });
-        $("#student_table").dataTable();
+        //$("#student_table").dataTable();
+        $("#student_table").dataTable( {"bSort": false});
         //$("input[name=education]").attr('value', 'love'); id="institution"
         //$("[id=task]:eq(0)").val("one");
         //$("[id=task]:eq(1)").val("two");
@@ -323,6 +324,10 @@ $('#confirmDelete').on('show.bs.modal', function (e) {
                                             <li role="presentation">
                                                 <a  href="#"  role = "menuitem" tabindex = "-1" onclick="setDelete(<?php echo $student->id;?>);" data-toggle="modal" data-target="#confirmDelete" data-title="Delete Student" data-message="Are you sure you want to delete this record ?"> <i class="glyphicon glyphicon-trash"></i> Delete</a>
                                             </li>
+                                            <li role = "presentation" class = "divider"></li>
+                                            <li role = "presentation">
+                                                <a  href="#" class="courses_alloted"  role = "menuitem" tabindex = "-1" onclick="myFunction(<?php echo $student->id;?>)"  data-toggle="modal" data-target="#courseAllotedModal"><span class="glyphicon glyphicon-edit"></span> Courses Allocation</a>
+                                            </li>
                                          </ul>
                                     </div>
                                     
@@ -363,6 +368,119 @@ $('#confirmDelete').on('show.bs.modal', function (e) {
         $("#student_id").val(student_id);
     }
 </script>
+<div class="modal fade" id="courseAllotedModal" role="dialog" style=" margin: 0px;">
+    <div class="modal-dialog" style="width: 90%;height: 90%;display: inline-block;text-align: center;vertical-align: middle;">
+        <!-- Modal content-->
+        <div class="modal-content" style="height: 90%;min-height: 90%;height: auto;border-radius: 0;">
+            <div class="modal-header" style=" background-color: #ac2925; color: white; font-size: 23px;">
+                <button type="button" class="close" data-dismiss="modal"><span class=" glyphicon glyphicon-remove"></span></button>
+            <h4 class="modal-title">Manage Course Allocation</h4>
+          </div>
+            <div style="width:900px;">
+                {!! Form::Open(array ('url' => '/add_program','class'=>'form-horizontal')) !!}
+                <table class="table"  >
+                    <tr>
+                        <td>
+                           <div class = "form-group">
+                              <label for = "firstname" class = "col-md-4 control-label">
+                                   {{ Form::label('title','Program Name:')}}
+                              </label>
+
+                             <div class = "col-md-7">
+                                 <input type="hidden" name="program_edit_id" id="program_edit_id" value="">
+                                 {{ Form::text('program_name',null,array('id'=>'program_name','class' => 'form-control input-sm','placeholder'=>'Enter Program Name','required'=>'true'))}}
+
+                             </div>
+                          </div>
+                        </td>
+                        <td>
+                            <div class = "form-group">
+                              <label for = "lastname" class = "col-md-4 control-label">
+                                   {{ Form::label('title','Duration:')}}
+                              </label>
+
+                              <div class = "col-md-7">
+                                  <select name="duration" id="duration" class="form-control input-sm">
+                                     <option value="1" selected="selected">One Year</option>
+                                     <option value="1.5">1.5 Years</option>
+                                     <option value="2">2 Years</option>
+                                     <option value="3">3 Years</option>
+                                     <option value="4">4 Years</option>
+
+                                 </select>
+                              </div>
+                           </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div class = "form-group">
+                              <label for = "firstname" class = "col-md-4 control-label">
+                                   {{ Form::label('title','Department:')}}
+                              </label>
+
+                             <div class = "col-md-7">
+                                 <select name="department" id="department" class="form-control input-sm">
+
+                                 </select>
+                             </div>
+                          </div>
+                        </td>
+                        <td >
+                            <div class = "form-group">
+                              <label for = "lastname" class = "col-md-4 control-label">
+                                   {{ Form::label('title','Status:')}}
+                              </label>
+
+                              <div class = "col-md-7">
+                                  <div class = "radio">
+                                  <label>
+                                     <input type = "radio" name = "status" id = "status" value = "Active" checked> Active
+                                  </label>
+                                  <label>
+                                     <input type = "radio" name = "status" id = "status" value = "Disabled">
+                                     Disabled
+                                  </label>
+                               </div>
+
+                              </div>
+                           </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td >
+                            <div class = "form-group">
+                              <label for = "firstname" class = "col-md-4 control-label">
+                                   {{ Form::label('title','Program Code:')}}
+                              </label>
+
+                             <div class = "col-md-7">
+                                 {{ Form::text('code',null,array('id'=>'code','class' => 'form-control input-sm','placeholder'=>'Enter Program Code','required'=>'true'))}}
+                             </div>
+                          </div>
+                        </td>
+                        <td>
+                            &nbsp;
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="col-md-12" colspan="2">
+                            <div class = "col-md-offset-5 col-md-5">
+                            {{ Form::submit('Save Program',array('class' => 'btn btn-circle btn-primary')) }}
+                            </div>
+                        </td>
+                    </tr>
+                </table> 
+
+              {!! Form::Close()!!}
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+          </div>
+        </div>
+
+      </div>
+  </div>
 <div class="modal fade" id="myModal" role="dialog" style=" margin: 0 0 0 5px;">
     <div class="modal-dialog" style="width: 90%;height: 90%;display: inline-block;text-align: center;vertical-align: middle;">
               <!-- Modal content-->
@@ -1293,28 +1411,28 @@ $('#confirmDelete').on('show.bs.modal', function (e) {
 
             </div>
         </div>
-        <div class="modal fade" id="confirmDelete" role="dialog" aria-labelledby="confirmDeleteLabel" aria-hidden="true">
-             <div class="modal-dialog">
-                <div class="modal-content">
-                    {!! Form::Open(array ('url' => '/remove_student','class'=>'form-horizontal')) !!}
-                        <div class="modal-header">
-                          <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                          <h4 class="modal-title">Delete Parmanently</h4>
-                        </div>
-                        <div class="modal-body">
-                          <p>Are you sure about this ?</p>
-                        </div>
-                        <div class="modal-footer">
-                          <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-                          <input type="hidden" name="student_id" id="student_id" value=""/>
-                          {{ Form::submit('Delete',array('class' => 'btn btn-circle btn-danger')) }}
-                          
-                        </div>
-                    {!! Form::Close()!!}
-                </div>
-              </div>
-         </div>
-        <script type="text/javascript">
+<div class="modal fade" id="confirmDelete" role="dialog" aria-labelledby="confirmDeleteLabel" aria-hidden="true">
+    <div class="modal-dialog">
+       <div class="modal-content">
+           {!! Form::Open(array ('url' => '/remove_student','class'=>'form-horizontal')) !!}
+               <div class="modal-header">
+                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                 <h4 class="modal-title">Delete Parmanently</h4>
+               </div>
+               <div class="modal-body">
+                 <p>Are you sure about this ?</p>
+               </div>
+               <div class="modal-footer">
+                 <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                 <input type="hidden" name="student_id" id="student_id" value=""/>
+                 {{ Form::submit('Delete',array('class' => 'btn btn-circle btn-danger')) }}
+
+               </div>
+           {!! Form::Close()!!}
+       </div>
+     </div>
+</div>
+<script type="text/javascript">
           $(function() {
             $( "#tabs" ).tabs();
             $( "#date_of_birth" ).datepicker({

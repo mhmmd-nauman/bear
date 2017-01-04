@@ -35,14 +35,16 @@ class ProgramOfferedController extends Controller
         //later needs to be fix when we have incharge roles
         $program->incharge_id   = Auth::user()->id;
         $program->save();
-        $request->session()->flash('flash_message', 'Program was successful added!');
+        return redirect('program?success=1&message=Program was successfully added!')->withInput() ;
+        //$request->session()->flash('flash_message', 'Program was successful added!');
         
-        return back();
+        //return back();
     }
     public function remove_program(Request $request){
          ProgramOffered::destroy($request->program_id);
-         $request->session()->flash('flash_message', 'Program was successful removed!');
-         return back();
+         //$request->session()->flash('flash_message', 'Program was successful removed!');
+         return redirect('program?success=1&message=Program was successfully removed!')->withInput() ;
+        // return back();
     }
     public function program_in_json(Request $request){
         return ProgramOffered::find($request->id)->toJson();
