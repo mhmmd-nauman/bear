@@ -84,15 +84,12 @@ $('#confirmDelete').on('show.bs.modal', function (e) {
                 $("#address").val(json.address);
                 $('input[name="gender"][value="' + json.gender + '"]').attr('checked',true);
                 $('input[name="marital_status"][value="' + json.marital_status + '"]').attr('checked',true);
-                
                 $("#date_of_birth").val("");
                 if(json.date_of_birth !== "1970-01-01"){
                     $("#date_of_birth").val(json.date_of_birth);
                 }
-                
                 $("#country_of_citizenship").val(json.country_of_citizenship);
                 $("#cnic").val(json.cnic);
-
                 $("#phone").val(json.phone);
                 $("#postal_address").val(json.postal_address);
                 $("#candidate_for_any_degree_title").val(json.candidate_for_any_degree_title);
@@ -111,10 +108,7 @@ $('#confirmDelete').on('show.bs.modal', function (e) {
                 if(json.sponsor_sign_date !== "1970-01-01"){
                     $("#sponsor_sign_date").val(json.sponsor_sign_date);
                 }
-                
-
                 $('input[name="admission_status"][value="' + json.admission_status + '"]').attr('checked',true);
-                
                 //$("#admission_date").val(json.admission_date);
                 $("#admission_date").val("");
                 if(json.admission_date !== "1970-01-01"){
@@ -200,6 +194,25 @@ $('#confirmDelete').on('show.bs.modal', function (e) {
             });
            
         });
+        
+        
+        $(".courses_alloted").click(function(){
+            var id = $("#student_id_edit").val();
+            $("#allocatted_student_id").val(id);
+            $.getJSON( "all_courses_in_json?id="+id, function( json ) {
+                $('#checkboxes').html("");
+                $.each( json, function( index, value ) {
+                    //console.log( "JSON Data: " + key + " val "+ val.department );
+                    //<div class = "col-md-12"
+                    $('#checkboxes').append('<div class = "col-md-4"><input type="checkbox" name="allocated_course_name[]" value="' + value.id + '" id="allocated_course_id" /> ' + value.name + '</div>');
+                   // $("#program").append($('<option>').text(value.program_name).attr('value', value.id));
+                  });
+                 
+                  
+           });
+        });
+        
+        
         //$("#student_table").dataTable();
         $("#student_table").dataTable( {"bSort": false});
         //$("input[name=education]").attr('value', 'love'); id="institution"
@@ -326,7 +339,7 @@ $('#confirmDelete').on('show.bs.modal', function (e) {
                                             </li>
                                             <li role = "presentation" class = "divider"></li>
                                             <li role = "presentation">
-                                                <a  href="#" class="courses_alloted"  role = "menuitem" tabindex = "-1" onclick="myFunction(<?php echo $student->id;?>)"  data-toggle="modal" data-target="#courseAllotedModal"><span class="glyphicon glyphicon-edit"></span> Courses Allocation</a>
+                                                <a  href="#" class="courses_alloted"  role = "menuitem" tabindex = "-1" onclick="myFunction(<?php echo $student->id;?>);"  data-toggle="modal" data-target="#courseAllotedModal"><span class="glyphicon glyphicon-edit"></span> Courses Allocation</a>
                                             </li>
                                          </ul>
                                     </div>
@@ -377,96 +390,23 @@ $('#confirmDelete').on('show.bs.modal', function (e) {
             <h4 class="modal-title">Manage Course Allocation</h4>
           </div>
             <div style="width:900px;">
-                {!! Form::Open(array ('url' => '/add_program','class'=>'form-horizontal')) !!}
+                {!! Form::Open(array ('url' => '/save_course_allocation','class'=>'form-horizontal')) !!}
+                <input type="text" value="" name="allocatted_student_id" id="allocatted_student_id"> 
                 <table class="table"  >
                     <tr>
-                        <td>
-                           <div class = "form-group">
-                              <label for = "firstname" class = "col-md-4 control-label">
-                                   {{ Form::label('title','Program Name:')}}
-                              </label>
-
-                             <div class = "col-md-7">
-                                 <input type="hidden" name="program_edit_id" id="program_edit_id" value="">
-                                 {{ Form::text('program_name',null,array('id'=>'program_name','class' => 'form-control input-sm','placeholder'=>'Enter Program Name','required'=>'true'))}}
-
-                             </div>
-                          </div>
+                        <td colspan="2">
+                            <div class = "form-group col-md-12" id="checkboxes" style=" text-align: left;">
+                              
+                            </div>
                         </td>
-                        <td>
-                            <div class = "form-group">
-                              <label for = "lastname" class = "col-md-4 control-label">
-                                   {{ Form::label('title','Duration:')}}
-                              </label>
-
-                              <div class = "col-md-7">
-                                  <select name="duration" id="duration" class="form-control input-sm">
-                                     <option value="1" selected="selected">One Year</option>
-                                     <option value="1.5">1.5 Years</option>
-                                     <option value="2">2 Years</option>
-                                     <option value="3">3 Years</option>
-                                     <option value="4">4 Years</option>
-
-                                 </select>
-                              </div>
-                           </div>
-                        </td>
+                        
                     </tr>
-                    <tr>
-                        <td>
-                            <div class = "form-group">
-                              <label for = "firstname" class = "col-md-4 control-label">
-                                   {{ Form::label('title','Department:')}}
-                              </label>
-
-                             <div class = "col-md-7">
-                                 <select name="department" id="department" class="form-control input-sm">
-
-                                 </select>
-                             </div>
-                          </div>
-                        </td>
-                        <td >
-                            <div class = "form-group">
-                              <label for = "lastname" class = "col-md-4 control-label">
-                                   {{ Form::label('title','Status:')}}
-                              </label>
-
-                              <div class = "col-md-7">
-                                  <div class = "radio">
-                                  <label>
-                                     <input type = "radio" name = "status" id = "status" value = "Active" checked> Active
-                                  </label>
-                                  <label>
-                                     <input type = "radio" name = "status" id = "status" value = "Disabled">
-                                     Disabled
-                                  </label>
-                               </div>
-
-                              </div>
-                           </div>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td >
-                            <div class = "form-group">
-                              <label for = "firstname" class = "col-md-4 control-label">
-                                   {{ Form::label('title','Program Code:')}}
-                              </label>
-
-                             <div class = "col-md-7">
-                                 {{ Form::text('code',null,array('id'=>'code','class' => 'form-control input-sm','placeholder'=>'Enter Program Code','required'=>'true'))}}
-                             </div>
-                          </div>
-                        </td>
-                        <td>
-                            &nbsp;
-                        </td>
-                    </tr>
+                   
+                    
                     <tr>
                         <td class="col-md-12" colspan="2">
                             <div class = "col-md-offset-5 col-md-5">
-                            {{ Form::submit('Save Program',array('class' => 'btn btn-circle btn-primary')) }}
+                            {{ Form::submit('Save Allocation',array('class' => 'btn btn-circle btn-primary')) }}
                             </div>
                         </td>
                     </tr>
