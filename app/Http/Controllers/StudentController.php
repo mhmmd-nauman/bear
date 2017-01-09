@@ -132,8 +132,8 @@ class StudentController extends Controller
             $student_program_code = $selected_program->code;
         }
         
-        if($student->roll_number == "" && $request->get('admission_status') == "Accepted"){
-            $results = Student::whereYear("admission_date","=",date("Y"))
+        if($student->roll_number == "" && $request->get('admission_year') != ""){
+            $results = Student::where("admission_year","=",$request->get('admission_year'))
                     ->where('roll_number','like',"%$student_program_code%")
                     ->where('semester','=',$request->get('semester'))
                     ->orderBy('id', 'desc')->count();
@@ -153,11 +153,12 @@ class StudentController extends Controller
             }
             if(empty($results)){
                 // issue the first
-                 $next_roll_number = $student_program_code.date("y").$semester_code."0001";
+                 $next_roll_number = $student_program_code.substr($request->get('admission_year'), -2).$semester_code."0001";
                 //exit;
             }else{
-                 $last_roll_number = Student::whereYear("admission_date","=",date("Y"))
+                 $last_roll_number = Student::where("admission_year","=",$request->get('admission_year'))
                     ->where('roll_number','like',"%$student_program_code%")
+                   // ->where('roll_number','IS','NULL') 
                     ->where('semester','=',$request->get('semester'))     
                     ->orderBy('id', 'desc')->first()->roll_number;
                  $last_four_characters = intval(substr($last_roll_number, -4));
@@ -178,7 +179,7 @@ class StudentController extends Controller
                             $next_roll_number .= $last_four_characters;
                      break;
                  }
-                $next_roll_number = $student_program_code.date("y").$semester_code.$next_roll_number;
+                $next_roll_number = $student_program_code.substr($request->get('admission_year'), -2).$semester_code.$next_roll_number;
             }
             
             $student->roll_number = $next_roll_number;
@@ -188,7 +189,7 @@ class StudentController extends Controller
         $student->last_name     = $request->get('last_name');
         $student->program_id       = $request->get('program');
         $student->semester      = $request->get('semester');
-        //$student->information_source = $request->get('information_source');
+        $student->admission_year = $request->get('admission_year');
         $student->mobile        = $request->get('mobile');
         //$student->semester = $request->get('semester');
         $student->father_name   = $request->get('father_name');

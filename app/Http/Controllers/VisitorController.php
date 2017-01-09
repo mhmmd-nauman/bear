@@ -78,16 +78,14 @@ class VisitorController extends Controller
         switch($request->load){
             case'yesterday':
                 $report_title = 'Yesterday - Mine';
-                $students = Visitor::select('id AS ID', 'first_name As First Name', 'last_name AS LastName','mobile As Contact','program as Program','visit_type as CallVisit','information_source as InformationSource','dealt_by as DealtBy','status As AdmissionStatus')
-                ->where('dealtby_id','=',$user_id)
+                $students = Visitor::where('dealtby_id','=',$user_id)
                 ->where('status','=','Info')
                 ->whereDate('created_at', '=', date('Y-m-d',  strtotime("-1 day")))
                 ->get();
                 break;
             case'last7day':
                 $report_title = 'Last 7 Days - Mine';
-                $students = Visitor::select('id AS ID', 'first_name As First Name', 'last_name AS LastName','mobile As Contact','program as Program','visit_type as CallVisit','information_source as InformationSource','dealt_by as DealtBy','status As AdmissionStatus')
-                        ->where('dealtby_id','=',$user_id)
+                $students = Visitor::where('dealtby_id','=',$user_id)
                         ->where('status','=','Info')
                         ->whereDate('created_at', '>=', date('Y-m-d',  strtotime("-30 day")))
                         ->orderBy('id', 'desc')
@@ -95,8 +93,7 @@ class VisitorController extends Controller
                 break;
             case'last30day':
                 $report_title = 'Last 30 Days - Mine';
-                $students = Visitor::select('id AS ID', 'first_name As First Name', 'last_name AS LastName','mobile As Contact','program as Program','visit_type as CallVisit','information_source as InformationSource','dealt_by as DealtBy','status As AdmissionStatus')
-                        ->where('dealtby_id','=',$user_id)
+                $students = Visitor::where('dealtby_id','=',$user_id)
                         ->where('status','=','Info')
                         ->whereDate('created_at', '>=', date('Y-m-d',  strtotime("-7 day")))
                         ->orderBy('id', 'desc')
@@ -104,25 +101,58 @@ class VisitorController extends Controller
                 break;
             case'viewalldata':
                 $report_title = 'View All Data';
-                $students = Visitor::select('id AS ID', 'first_name As First Name', 'last_name AS LastName','mobile As Contact','program as Program','visit_type as CallVisit','information_source as InformationSource','dealt_by as DealtBy','status As AdmissionStatus')
-                        ->where('dealtby_id','=',$user_id)
+                $students = Visitor::where('dealtby_id','=',$user_id)
                         ->orderBy('id', 'desc')
                         ->get();
                 break;
             default:
                 $report_title = 'Today - Mine';
-               $students = Visitor::select('id AS ID', 'first_name As First Name', 'last_name AS LastName','mobile As Contact','program as Program','visit_type as CallVisit','information_source as InformationSource','dealt_by as DealtBy','status As AdmissionStatus')
-                       ->where('dealtby_id','=',$user_id) 
-                       ->where('status','=','Info')
+               $students = Visitor::where('dealtby_id','=',$user_id) 
+                        ->where('status','=','Info')
                         ->whereDate('created_at', '=', date('Y-m-d'))
                         ->orderBy('id', 'desc')
                         ->get();
         }
         
+        //$students = Visitor::where('dealtby_id','=',$user_id) 
+                        //->where('status','=','Info')
+                        //->whereDate('created_at', '=', date('Y-m-d'))
+                        //->orderBy('id', 'desc')
+                        //->get();
+        
+        //print_r($students->toArray());
+        //exit;
         $excel = App::make('excel');
+        
+        // incase we dont need headers
+        //$excel->fromArray($data, null, 'A1', false, false);
+        
         Excel::create("$report_title", function($excel) use($students) {
             $excel->sheet("Sheet One", function($sheet) use($students) {
-                $sheet->fromArray($students);
+                //$sheet->fromArray($students);
+                $sheet->row(1, array(
+                        'ID','Date', 'First Name','Last Name','Contact','Program','Call/Visit','Information Source','Dealt By','Admission Status'
+                   ));
+                $sheet->row(1, function($row) {
+                    // call cell manipulation methods
+                    $row->setBackground('#FFFF00');
+                });
+                $i=2;
+                foreach($students as $student){
+                    $sheet->row($i, array(
+                        $i - 1,
+                        date("d/m/Y",strtotime($student->created_at)),
+                        $student->first_name,
+                        $student->last_name,
+                        $student->mobile,
+                        $student->student_program->program_name,
+                        $student->visit_type,
+                        $student->information_source,
+                        $student->dealt_by,
+                        $student->status
+                    ));
+                    $i++;
+                }
             });
         })->export('xls');
     }

@@ -73,6 +73,7 @@ $('#confirmDelete').on('show.bs.modal', function (e) {
                 $("#first_name").val(json.first_name);
                 $("#last_name").val(json.last_name);
                 $("#program").val(json.program_id).change();
+                $("#admission_year").val(json.admission_year).change();
                 $('input[name="semester"][value="' + json.semester + '"]').attr('checked',true);
                 $("#father_name").val(json.father_name);
                 $("#mobile").val(json.mobile);
@@ -314,7 +315,7 @@ $('#confirmDelete').on('show.bs.modal', function (e) {
                                 <td> <?php echo $student->first_name." ".$student->last_name; ?></td>
                                 <td> <?php echo $student->roll_number;  ?></td>
                                 <td><?php echo $student->student_program->program_name; ?></td>
-                                <td><?php echo $student->semester." ".date("Y",  strtotime($student->admission_date)); ?></td>
+                                <td><?php echo $student->semester." ".$student->admission_year; ?></td>
                                 <!--
                                 <td><?php echo $student->dealt_by; ?></td>
                                 -->
@@ -513,19 +514,28 @@ $('#confirmDelete').on('show.bs.modal', function (e) {
                                     </label>
 
                                     <div class = "col-md-7">
-                                        <div class = "radio">
-                                        <label>
-                                           <input type = "radio" name = "semester" id = "semester" value = "Fall" checked> Fall
-                                        </label>
-                                        <label>
-                                           <input type = "radio" name = "semester" id = "semester" value = "Spring">
-                                           Spring
-                                        </label>
-                                        <label>
-                                           <input type = "radio" name = "semester" id = "semester" value = "Summer">
-                                           Summer
-                                        </label>
-                                     </div>
+                                        <div class = "radio col-md-9">
+                                            <label>
+                                                <input type = "radio" name = "semester" id = "semester" value = "Spring">Spring
+                                            </label>
+                                            <label>
+                                                <input type = "radio" name = "semester" id = "semester" value = "Summer">Summer
+                                            </label>
+                                            <label>
+                                                <input type = "radio" name = "semester" id = "semester" value = "Fall" checked> Fall
+                                            </label>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <select name="admission_year" id="admission_year" class="form-control" style=" width: 80px;">
+                                                <option value="2017" >2017</option>
+                                                <option value="2016" selected>2016</option>
+                                                <option value="2015">2015</option>
+                                                <option value="2014">2014</option>
+                                                <option value="2013">2013</option>
+                                                <option value="2012">2012</option>
+                                                <option value="2011">2011</option>
+                                            </select>
+                                        </div>
 
                                     </div>
                                  </div>

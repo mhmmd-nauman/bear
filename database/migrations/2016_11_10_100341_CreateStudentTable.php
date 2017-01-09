@@ -18,6 +18,7 @@ class CreateStudentTable extends Migration
             $table->string('application_number')->nullable();
             $table->string('roll_number')->nullable()->unique();
             $table->enum('semester', ['Spring', 'Fall','Summer'])->nullable();
+            $table->string('admission_year');
             $table->integer('visitor_id')->nullable();
             $table->string('first_name');
             $table->string('last_name');
