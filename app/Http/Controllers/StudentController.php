@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use DB; 
 use App\Http\Requests;
 use App\Student;
+use App\Course;
 use App\Visitor;
 use App\StudentEducation;
 use App\StudentPreviousMajorSubjects;
@@ -27,6 +28,63 @@ class StudentController extends Controller
     }
     public function index(){
 
+    }
+    public function all_student_unallocated_courses_in_json(Request $request){
+        $student = Student::find($request->allocatted_student_id);
+        $alloted_courses = array();
+        foreach ($student->courses as $course) {
+            $alloted_courses[] = $course->pivot->course_id;
+        }
+        $courses = Course::all();
+        $remanining_courses = array();
+        foreach ($courses as $course) {
+            if(!in_array($course->id, $alloted_courses)){
+                $remanining_courses[] = $course->id;
+            }
+        }
+        $courses = Course::whereIn('id',$remanining_courses)->get();
+        return $courses->toJson();
+        
+    }
+    public function save_course_allocation(Request $request){
+        //echo $request->get('allocatted_student_id');
+        $student = Student::find($request->allocatted_student_id);
+        //$student->courses()->attach(2);
+        //print_r($student->courses->toArray());
+        //exit;
+        $course_data = $request->get('allocated_course_name');
+        //foreach ($student->courses as $course) {
+        //    if(in_array($course->pivot->course_id,$course_data)){
+        //        echo " it exists <br>";
+        //    }
+        //}
+        $new_courses = array();
+        $flag = 0;
+        foreach((array)$course_data as $course_id){
+            foreach ($student->courses as $course) {
+                if($course_id == $course->pivot->course_id){
+                    //echo "it matched $course_id == ".$course->pivot->course_id;
+                    $flag = 1;
+                    $course->pivot->allocation_year = "1990";
+                    $course->pivot->save();
+                }
+            }
+            if($flag == 0){
+                $new_courses[] = $course_id;
+            }
+            $flag = 0;
+        }
+        foreach($new_courses as $course_id){       
+            $student->courses()->attach($course_id , 
+                ['semester' => $request->semester, 
+                'allocation_year' => $request->allocation_year,
+                'date_of_allocation'=>date("Y-m-d")
+                ]
+            );
+        }
+        
+        return redirect('student?success=1&message=Student was successfully allocated courses!')->withInput() ;
+        //exit;
     }
    
     public function export_student_pdf(){

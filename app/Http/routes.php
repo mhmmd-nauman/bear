@@ -61,7 +61,8 @@ Route::group(['middleware' => ['web']], function () {
     Route::post('/remove_course','CourseController@remove_course');
     Route::get('/course_in_json','CourseController@course_in_json');
     Route::get('/all_courses_in_json','CourseController@all_courses_in_json');
-    Route::post('/save_course_allocation','CourseController@save_course_allocation');
+    Route::get('/all_student_unallocated_courses_in_json','StudentController@all_student_unallocated_courses_in_json');
+    Route::post('/save_course_allocation','StudentController@save_course_allocation');
     //
     // end of department routes
     

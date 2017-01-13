@@ -26,7 +26,18 @@ class Student extends Model {
     }
     
     public function courses() {
-        return $this->belongsToMany('App\Course', 'students_courses', 'student_id', 'course_id');
+        return $this->belongsToMany('App\Course', 'students_courses', 'student_id', 'course_id')
+                    ->withPivot('semester', 
+                            'allocation_year',
+                            'date_of_allocation',
+                            'date_of_midterm',
+                            'midterm_marks',
+                            'date_of_finalterm',
+                            'finalterm_marks',
+                            'obtain_cgpa',
+                            'obtain_grade'
+                            )
+                    ->withTimestamps();
     }
 
 }

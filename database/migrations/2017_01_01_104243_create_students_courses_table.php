@@ -17,6 +17,7 @@ class CreateStudentsCoursesTable extends Migration
             $table->integer('student_id'); // 
             $table->integer('course_id'); //
             $table->enum('semester', ['Spring', 'Fall','Summer'])->nullable();
+            $table->string('allocation_year')->nullable();
             $table->date('date_of_allocation')->nullable();
             $table->date('date_of_midterm')->nullable();
             $table->decimal('midterm_marks')->nullable();

@@ -200,10 +200,10 @@ $('#confirmDelete').on('show.bs.modal', function (e) {
         $(".courses_alloted").click(function(){
             var id = $("#student_id_edit").val();
             $("#allocatted_student_id").val(id);
-            $.getJSON( "all_courses_in_json?id="+id, function( json ) {
+            $.getJSON( "all_student_unallocated_courses_in_json?allocatted_student_id="+id, function( json ) {
                 $('#checkboxes').html("");
                 $.each( json, function( index, value ) {
-                    //console.log( "JSON Data: " + key + " val "+ val.department );
+                    //console.log( "JSON Data: " + key + " val "+ val.id );
                     //<div class = "col-md-12"
                     $('#checkboxes').append('<div class = "col-md-4"><input type="checkbox" name="allocated_course_name[]" value="' + value.id + '" id="allocated_course_id" /> ' + value.name + '</div>');
                    // $("#program").append($('<option>').text(value.program_name).attr('value', value.id));
@@ -394,6 +394,42 @@ $('#confirmDelete').on('show.bs.modal', function (e) {
                 {!! Form::Open(array ('url' => '/save_course_allocation','class'=>'form-horizontal')) !!}
                 <input type="text" value="" name="allocatted_student_id" id="allocatted_student_id"> 
                 <table class="table"  >
+                    <tr>
+                        <td colspan="2">
+                            <label for = "lastname" class = "col-md-2 control-label">
+                                {{ Form::label('title','Semester:')}}
+                           </label>
+                            <div class = "col-md-9">
+                                <div class = "radio col-md-6">
+                                    
+                                    <label>
+                                        <input type = "radio" name = "semester" id = "semester" value = "Spring">Spring
+                                    </label>
+                                    <label>
+                                        <input type = "radio" name = "semester" id = "semester" value = "Summer">Summer
+                                    </label>
+                                    <label>
+                                        <input type = "radio" name = "semester" id = "semester" value = "Fall" checked> Fall
+                                    </label>
+                                </div>
+                                <div class="col-md-3">
+                                    <label for = "lastname" class = " control-label">
+                                        {{ Form::label('title','Year:')}}
+                                   </label>
+                                </div>
+                                <div class="col-md-3">
+                                    <select name="allocation_year" id="allocation_year" class="form-control" style=" width: 80px;">
+                                        <option value="2017" >2017</option>
+                                        <option value="2016" selected>2016</option>
+                                        <option value="2015">2015</option>
+                                        <option value="2014">2014</option>
+                                        <option value="2013">2013</option>
+                                        <option value="2012">2012</option>
+                                        <option value="2011">2011</option>
+                                    </select>
+                                </div>
+                        </td>
+                    </tr>
                     <tr>
                         <td colspan="2">
                             <div class = "form-group col-md-12" id="checkboxes" style=" text-align: left;">

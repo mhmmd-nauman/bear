@@ -18,11 +18,7 @@ class CourseController extends Controller
         $report_title = "Courses Information";
         return view('courses.list_courses', compact('courses'),['report_title'=>$report_title]);
     }
-    public function save_course_allocation(Request $request){
-        echo $request->get('allocatted_student_id');
-        echo $request->get('allocated_course_name');
-        exit;
-    }
+    
     public function add_course(Request $request){
         
         if($request->get('course_edit_id')){
