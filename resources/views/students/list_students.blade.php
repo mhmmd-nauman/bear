@@ -211,6 +211,16 @@ $('#confirmDelete').on('show.bs.modal', function (e) {
                  
                   
            });
+           // plug allready assigned courses
+           var allready_assigned_courese_list = "";
+           $.getJSON( "all_student_allocated_courses_in_json?allocatted_student_id="+id, function( json ) {
+                $('#assigned_courses').html("");
+                $.each( json, function( index, value ) {
+                    $('#assigned_courses').append('<div class = "col-md-4"><input type="checkbox" name="allocated_course_name[]" value="' + value.id + '" id="allocated_course_id" checked /> ' + value.name + '</div>');
+                    allready_assigned_courese_list = allready_assigned_courese_list+value.id+",";
+                  });
+                 $('#assigned_courses').append('<input type="hidden" name=allready_assigned_courses value="'+allready_assigned_courese_list+'">'); 
+           });
         });
         
         
@@ -297,7 +307,7 @@ $('#confirmDelete').on('show.bs.modal', function (e) {
                             <th style=" width: 5%;">App#</th>
                             <th style=" width: 10%;">Date</th>
                             <th>Name</th>
-                            <th style=" width: 10%;">Registration#</th>
+                            <th style=" width: 10%;">Roll#</th>
                             <th style=" width: 5%;">Program</th>
                             <th style=" width: 10%;">Admission</th>
                             <!--
@@ -392,7 +402,8 @@ $('#confirmDelete').on('show.bs.modal', function (e) {
           </div>
             <div style="width:900px;">
                 {!! Form::Open(array ('url' => '/save_course_allocation','class'=>'form-horizontal')) !!}
-                <input type="text" value="" name="allocatted_student_id" id="allocatted_student_id"> 
+                <input type="hidden" value="" name="allocatted_student_id" id="allocatted_student_id">
+                
                 <table class="table"  >
                     <tr>
                         <td colspan="2">
@@ -431,6 +442,11 @@ $('#confirmDelete').on('show.bs.modal', function (e) {
                         </td>
                     </tr>
                     <tr>
+                        <td colspan="2" style=" //text-align: left;">
+                            <h4>Available Courses - Fall 2016</h4>
+                        </td> 
+                    </tr>
+                    <tr>
                         <td colspan="2">
                             <div class = "form-group col-md-12" id="checkboxes" style=" text-align: left;">
                               
@@ -438,15 +454,27 @@ $('#confirmDelete').on('show.bs.modal', function (e) {
                         </td>
                         
                     </tr>
-                   
-                    
                     <tr>
+                        <td colspan="2" style=" //text-align: left;">
+                            <h4>Assigned Courses - Fall 2016</h4>
+                        </td> 
+                    </tr>
+                    <tr>
+                        <td colspan="2">
+                            <div class = "form-group col-md-12" id="assigned_courses" style=" text-align: left;">
+                              assigned courses
+                            </div>
+                        </td>
+                        
+                    </tr>
+                   <tr>
                         <td class="col-md-12" colspan="2">
                             <div class = "col-md-offset-5 col-md-5">
                             {{ Form::submit('Save Allocation',array('class' => 'btn btn-circle btn-primary')) }}
                             </div>
                         </td>
                     </tr>
+                    
                 </table> 
 
               {!! Form::Close()!!}

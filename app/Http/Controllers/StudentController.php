@@ -29,6 +29,22 @@ class StudentController extends Controller
     public function index(){
 
     }
+    public function all_student_allocated_courses_in_json(Request $request){
+        $student = Student::find($request->allocatted_student_id);
+        $alloted_courses = array();
+        foreach ($student->courses as $course) {
+            $alloted_courses[] = $course->pivot->course_id;
+        }
+        $courses = Course::all();
+        $remanining_courses = array();
+        foreach ($courses as $course) {
+            if(!in_array($course->id, $alloted_courses)){
+                $remanining_courses[] = $course->id;
+            }
+        }
+        $courses = Course::whereIn('id',$alloted_courses)->get();
+        return $courses->toJson();
+    }
     public function all_student_unallocated_courses_in_json(Request $request){
         $student = Student::find($request->allocatted_student_id);
         $alloted_courses = array();
@@ -59,14 +75,16 @@ class StudentController extends Controller
         //    }
         //}
         $new_courses = array();
+        $student_courses = array();
         $flag = 0;
         foreach((array)$course_data as $course_id){
-            foreach ($student->courses as $course) {
+            foreach ($student->courses()->where('allocation_year','=',$request->allocation_year)->where('semester','=',$request->semester)->get() as $course) {
                 if($course_id == $course->pivot->course_id){
                     //echo "it matched $course_id == ".$course->pivot->course_id;
                     $flag = 1;
                     $course->pivot->allocation_year = "1990";
                     $course->pivot->save();
+                    $student_courses[] = $course->pivot->course_id;
                 }
             }
             if($flag == 0){
@@ -82,7 +100,15 @@ class StudentController extends Controller
                 ]
             );
         }
-        
+        // manage de allocation course if possible
+        $allready_assigned_courses = array();
+        $allready_assigned_courses = explode(",", $request->allready_assigned_courses);
+        foreach($allready_assigned_courses as $assigned_course_id){
+            if(!in_array($assigned_course_id, $student_courses)){
+                // we need to de-attached
+                $student->courses()->detach($assigned_course_id);
+            }
+        }
         return redirect('student?success=1&message=Student was successfully allocated courses!')->withInput() ;
         //exit;
     }
