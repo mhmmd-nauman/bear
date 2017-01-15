@@ -66,12 +66,12 @@
                                 <b class = "caret"></b>
                              </a>
                             <ul class="dropdown-menu">
-                                
                                 <li><a href="{{url('/department')}}">Department</a></li>
                                 <li><a href="{{url('/program')}}">Programs</a></li>
                                 <li><a href="{{ route('users.index') }}">Users</a></li>
                                 <li><a href="{{url('/course')}}">Courses</a></li>
-                               
+                                <li role = "presentation" class = "divider"></li>
+                                <li><a href="#{{url('/personal-settings')}}">Personal Settings</a></li>
                             </ul>
                           </li>
                           <li class = "dropdown">
