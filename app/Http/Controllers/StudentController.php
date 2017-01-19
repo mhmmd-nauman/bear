@@ -121,6 +121,17 @@ class StudentController extends Controller
     }
     public function all_student_unallocated_courses_in_json(Request $request){
         $student = Student::find($request->allocatted_student_id);
+        if(isset($request->allocation_year)){
+            $allocation_year = $request->allocation_year;
+        }else{
+            $allocation_year = 2016;
+        }
+        if(isset($request->semester)){
+            $semester = $request->semester;
+        }else{
+            $semester = 'Fall';
+        }
+        
         $alloted_courses = array();
         foreach ($student->courses as $course) {
             $alloted_courses[] = $course->pivot->course_id;

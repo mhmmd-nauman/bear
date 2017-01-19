@@ -20,13 +20,13 @@
                                 <div class = "radio col-md-6">
                                     
                                     <label>
-                                        <input type = "radio" name = "semester" id = "semester" value = "Spring">Spring
+                                        <input type = "radio" name = "semester" id = "semester" class="courses_alloted" value = "Spring">Spring
                                     </label>
                                     <label>
-                                        <input type = "radio" name = "semester" id = "semester" value = "Summer">Summer
+                                        <input type = "radio" name = "semester" id = "semester" class="courses_alloted" value = "Summer">Summer
                                     </label>
                                     <label>
-                                        <input type = "radio" name = "semester" id = "semester" value = "Fall" checked> Fall
+                                        <input type = "radio" name = "semester" id = "semester" value = "Fall" class="courses_alloted" checked> Fall
                                     </label>
                                 </div>
                                 <div class="col-md-3">
@@ -35,7 +35,7 @@
                                    </label>
                                 </div>
                                 <div class="col-md-3">
-                                    <select name="allocation_year" id="allocation_year" class="form-control" style=" width: 80px;">
+                                    <select name="allocation_year" id="allocation_year" class="form-control courses_alloted" style=" width: 80px;">
                                         <option value="2017" >2017</option>
                                         <option value="2016" selected>2016</option>
                                         <option value="2015">2015</option>
@@ -49,7 +49,7 @@
                     </tr>
                     <tr>
                         <td colspan="2" style=" //text-align: left;">
-                            <h4>Available Courses - Fall 2016</h4>
+                            <h4>Available Courses - <span id = "allocation_semester_message1">Fall 2016</span></h4>
                         </td> 
                     </tr>
                     <tr>
@@ -62,7 +62,7 @@
                     </tr>
                     <tr>
                         <td colspan="2" style=" //text-align: left;">
-                            <h4>Assigned Courses - Fall 2016</h4>
+                            <h4>Assigned Courses - <span id = "allocation_semester_message2">Fall 2016</span></h4>
                         </td> 
                     </tr>
                     <tr>
