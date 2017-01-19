@@ -16,6 +16,8 @@ class CreateCoursesTable extends Migration
             $table->increments('id');
             $table->string('name');
             $table->string('code');
+            //$table->string('code');
+            $table->integer('credit_hours')->nullable();
             $table->enum('status', ['Active','Disabled'])->nullable();
             
             $table->timestamps();

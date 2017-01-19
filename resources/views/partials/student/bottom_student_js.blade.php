@@ -202,30 +202,66 @@ $('#confirmDelete').on('show.bs.modal', function (e) {
         });
         
         
-        $(".courses_student_marks").click(function(){
+        $(".courses_alloted").click(function(){
             var id = $("#student_id_edit").val();
             $("#allocatted_student_id").val(id);
+            //alert(id);
+            $.getJSON( "all_student_unallocated_courses_in_json?allocatted_student_id="+id, function( json ) {
+                $('#checkboxes').html("");
+                $.each( json, function( index, value ) {
+                    //console.log( "JSON Data: " + key + " val "+ val.id );
+                    //<div class = "col-md-12"
+                    $('#checkboxes').append('<div class = "col-md-4"><input type="checkbox" name="allocated_course_name[]" value="' + value.id + '" id="allocated_course_id" /> ' + value.name + '</div>');
+                   // $("#program").append($('<option>').text(value.program_name).attr('value', value.id));
+                  });
+                 
+                  
+           });
+           // plug allready assigned courses
+           var allready_assigned_courese_list = "";
+           $.getJSON( "all_student_allocated_courses_in_json?allocatted_student_id="+id, function( json ) {
+                $('#assigned_courses').html("");
+                $.each( json, function( index, value ) {
+                    $('#assigned_courses').append('<div class = "col-md-4"><input type="checkbox" name="allocated_course_name[]" value="' + value.id + '" id="allocated_course_id" checked /> ' + value.name + '</div>');
+                    allready_assigned_courese_list = allready_assigned_courese_list+value.id+",";
+                  });
+                 $('#assigned_courses').append('<input type="hidden" name=allready_assigned_courses value="'+allready_assigned_courese_list+'">'); 
+           });
+        });
+        
+        $(".courses_student_marks").click(function(){
+            var id = $("#student_id_edit").val();
+            $("#marks_detail_student_id").val(id);
             
            // plug allready assigned courses
            var allready_assigned_courese_list = "";
            var displayed_html = "";
-           $.getJSON( "all_student_allocated_courses_in_json?allocatted_student_id="+id, function( json ) {
-                $('#assigned_courses').html("");
+           $.getJSON( "all_student_allocated_courses_marks_in_json?allocatted_student_id="+id, function( json ) {
+                $('#assigned_student_courses').html("");
                 displayed_html = displayed_html + "<div class ='row'>";
-                    displayed_html = displayed_html + "<div class = 'col-md-4'><b>Subject</b></div>";
-                    displayed_html = displayed_html + "<div class = 'col-md-4'><b>Mid Marks</b></div>";
-                    displayed_html = displayed_html + "<div class = 'col-md-4'><b>Final Marks</b></div>";
+                    displayed_html = displayed_html + "<div class = 'col-md-3'><b>Subject</b></div>";
+                    displayed_html = displayed_html + "<div class = 'col-md-2'><b>Mid Marks</b></div>";
+                    displayed_html = displayed_html + "<div class = 'col-md-2'><b>Final Marks</b></div>";
+                    displayed_html = displayed_html + "<div class = 'col-md-1'><b>As. Marks</b></div>";
+                    displayed_html = displayed_html + "<div class = 'col-md-1'><b>Q. Marks</b></div>";
+                    displayed_html = displayed_html + "<div class = 'col-md-1'><b>P. Marks</b></div>";
+                    displayed_html = displayed_html + "<div class = 'col-md-1'><b>At. Marks</b></div>";
                     displayed_html = displayed_html + "</div>";
+                    //sessional_assignment
                 $.each( json, function( index, value ) {
                     displayed_html = displayed_html + "<div class ='row'>";
-                    displayed_html = displayed_html + "<div class = 'col-md-4'>" + value.name + "</div>";
-                    displayed_html = displayed_html + "<div class = 'col-md-4'><input type='text' class='form-control input-sm'></div>";
-                    displayed_html = displayed_html + "<div class = 'col-md-4'><input type='text' class='form-control input-sm'></div>";
+                    displayed_html = displayed_html + "<div class = 'col-md-3'>" + value.name + "</div>";
+                    displayed_html = displayed_html + "<div class = 'col-md-2'><input type='text' name='midterm_marks[" + value.id + "][]' id='midterm_marks' class='form-control input-sm' value='"+value.pivot.midterm_marks+"'></div>";
+                    displayed_html = displayed_html + "<div class = 'col-md-2'><input type='text' name='finalterm_marks[" + value.id + "][]' id='finalterm_marks' class='form-control input-sm' value='"+value.pivot.finalterm_marks+"'></div>";
+                    displayed_html = displayed_html + "<div class = 'col-md-1'><input type='text' name='sessional_assignment[" + value.id + "][]' id='sessional_assignment' class='form-control input-sm' value='"+value.pivot.sessional_assignment+"'></div>";
+                    displayed_html = displayed_html + "<div class = 'col-md-1'><input type='text' name='sessional_quiz[" + value.id + "][]' id='sessional_quiz' class='form-control input-sm' value='"+value.pivot.sessional_quiz+"'></div>";
+                    displayed_html = displayed_html + "<div class = 'col-md-1'><input type='text' name='sessional_presentation[" + value.id + "][]' id='sessional_presentation' class='form-control input-sm' value='"+value.pivot.sessional_presentation+"'></div>";
+                    displayed_html = displayed_html + "<div class = 'col-md-1'><input type='text' name='sessional_attendence[" + value.id + "][]' id='sessional_attendence' class='form-control input-sm' value='"+value.pivot.sessional_attendence+"'></div>";
                     displayed_html = displayed_html + "</div>";
                     allready_assigned_courese_list = allready_assigned_courese_list+value.id+",";
                   });
-                $('#assigned_courses').append(displayed_html);
-                $('#assigned_courses').append('<input type="hidden" name=allready_assigned_courses value="'+allready_assigned_courese_list+'">'); 
+                $('#assigned_student_courses').append(displayed_html);
+                $('#assigned_student_courses').append('<input type="hidden" name=allready_assigned_courses value="'+allready_assigned_courese_list+'">'); 
            });
         });
         

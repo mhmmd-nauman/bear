@@ -23,6 +23,10 @@ class CreateStudentsCoursesTable extends Migration
             $table->decimal('midterm_marks')->nullable();
             $table->date('date_of_finalterm')->nullable();
             $table->decimal('finalterm_marks')->nullable();
+            $table->integer('sessional_assignment')->nullable();
+            $table->integer('sessional_quiz')->nullable();
+            $table->integer('sessional_presentation')->nullable();
+            $table->integer('sessional_attendence')->nullable();
             $table->decimal('obtain_cgpa')->nullable();
             $table->string('obtain_grade')->nullable();
             $table->timestamps();

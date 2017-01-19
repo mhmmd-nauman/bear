@@ -8,7 +8,7 @@
           </div>
             <div style="width:900px;">
                 {!! Form::Open(array ('url' => '/save_course_marks','class'=>'form-horizontal')) !!}
-                <input type="hidden" value="" name="allocatted_student_id" id="allocatted_student_id">
+                <input type="hidden" value="" name="allocatted_student_id" id="marks_detail_student_id">
                 
                 <table class="table"  >
                     <tr>
@@ -55,7 +55,7 @@
                     </tr>
                     <tr>
                         <td colspan="2">
-                            <div class = "form-group col-md-12" id="assigned_courses" style=" text-align: left;">
+                            <div class = "form-group col-md-12" id="assigned_student_courses" style=" text-align: left;">
                               
                             </div>
                         </td>

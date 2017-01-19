@@ -125,6 +125,10 @@
                                             <li role = "presentation">
                                                 <a  href="#" class="courses_student_marks"  role = "menuitem" tabindex = "-1" onclick="myFunction(<?php echo $student->id;?>);"  data-toggle="modal" data-target="#StudentCourseMarkModal"><span class="glyphicon glyphicon-edit"></span> Course Marks</a>
                                             </li>
+                                            <li role = "presentation" class = "divider"></li>
+                                            <li role = "presentation">
+                                                <a  href="{{url('/student-result-transcript/'.$student->id)}}" target="_blank" role = "menuitem" tabindex = "-1">Result Transcript</a>
+                                            </li>
                                          </ul>
                                     </div>
                                     

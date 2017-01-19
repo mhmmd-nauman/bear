@@ -28,6 +28,7 @@ class CourseController extends Controller
         }
         $course->name = $request->get('name');
         $course->code  = $request->get('code');
+        $course->credit_hours  = $request->get('credit_hours');
         $course->status    = $request->get('status');
         
         //$department->entered_id = Auth::user()->id;

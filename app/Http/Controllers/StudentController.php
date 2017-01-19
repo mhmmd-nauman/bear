@@ -29,10 +29,84 @@ class StudentController extends Controller
     public function index(){
 
     }
+    public function student_result_transcript(Request $request){
+        $students = Student::find($request->id); 
+                        
+        
+        //print_r($students->toArray());
+        //exit;
+        $excel = App::make('excel');
+        
+        // incase we dont need headers
+        //$excel->fromArray($data, null, 'A1', false, false);
+        
+        Excel::create("$students->first_name Transcript", function($excel) use($students) {
+            $excel->sheet("Sheet One", function($sheet) use($students) {
+                //$sheet->fromArray($students);
+                $sheet->row(1, array(
+                        'ID','Date', 'First Name','Last Name','Contact','Program','Call/Visit','Information Source','Dealt By','Admission Status'
+                   ));
+                $sheet->row(1, function($row) {
+                    // call cell manipulation methods
+                    $row->setBackground('#FFFF00');
+                });
+                $i=2;
+                /*
+                foreach($students as $student){
+                    $sheet->row($i, array(
+                        $i - 1,
+                        date("d/m/Y",strtotime($student->created_at)),
+                        $student->first_name,
+                        $student->last_name,
+                        $student->mobile,
+                        $student->student_program->program_name,
+                        $student->visit_type,
+                        $student->information_source,
+                        $student->dealt_by,
+                        $student->status
+                    ));
+                    $i++;
+                }
+                 */
+            });
+        })->export('xls');
+    }
+
+    public function all_student_allocated_courses_marks_in_json(Request $request){
+        $student = Student::find($request->allocatted_student_id);
+        if(isset($request->allocation_year)){
+            $allocation_year = $request->allocation_year;
+        }else{
+            $allocation_year = 2016;
+        }
+        if(isset($request->semester)){
+            $semester = $request->semester;
+        }else{
+            $semester = 'Fall';
+        }
+        $courses = $student->courses()->where('allocation_year','=',$allocation_year)
+                        ->where('semester','=',$semester)
+                        ->get();
+        //print_r($courses->toArray());
+        //exit;
+        return $courses->toJson();
+    }
     public function all_student_allocated_courses_in_json(Request $request){
         $student = Student::find($request->allocatted_student_id);
+        if(isset($request->allocation_year)){
+            $allocation_year = $request->allocation_year;
+        }else{
+            $allocation_year = 2016;
+        }
+        if(isset($request->semester)){
+            $semester = $request->semester;
+        }else{
+            $semester = 'Fall';
+        }
         $alloted_courses = array();
-        foreach ($student->courses as $course) {
+        foreach ($student->courses()->where('allocation_year','=',$allocation_year)
+                        ->where('semester','=',$semester)
+                        ->get() as $course) {
             $alloted_courses[] = $course->pivot->course_id;
         }
         $courses = Course::all();
@@ -62,8 +136,33 @@ class StudentController extends Controller
         return $courses->toJson();
         
     }
+    public function save_course_marks(Request $request){
+        $student = Student::find($request->allocatted_student_id);
+        //print_r($request->midterm_marks);
+        foreach((array)$request->midterm_marks as $course_id=>$midterm_mark){
+            //echo " $course_id=>$midterm_mark[0]";
+            foreach( $student->courses()->where('allocation_year','=',$request->allocation_year)
+                        ->where('semester','=',$request->semester)
+                        ->where('course_id','=',$course_id)
+                        ->get() as $course){
+            //print($course->pivot->course_id);
+            $course->pivot->midterm_marks = $midterm_mark[0];
+            $course->pivot->finalterm_marks = $request->finalterm_marks[$course_id][0];
+            $course->pivot->sessional_assignment = $request->sessional_assignment[$course_id][0];
+            $course->pivot->sessional_quiz = $request->sessional_quiz[$course_id][0];
+            $course->pivot->sessional_presentation = $request->sessional_presentation[$course_id][0];
+            $course->pivot->sessional_attendence = $request->sessional_attendence[$course_id][0];
+            $course->pivot->save();
+            }
+        }
+        
+        return redirect('student?success=1&message=Student was successfully updated!')->withInput() ;
+        
+        exit();
+    }
+
     public function save_course_allocation(Request $request){
-        //echo $request->get('allocatted_student_id');
+        $request->get('allocatted_student_id');
         $student = Student::find($request->allocatted_student_id);
         //$student->courses()->attach(2);
         //print_r($student->courses->toArray());
@@ -82,7 +181,7 @@ class StudentController extends Controller
                 if($course_id == $course->pivot->course_id){
                     //echo "it matched $course_id == ".$course->pivot->course_id;
                     $flag = 1;
-                    $course->pivot->allocation_year = "1990";
+                    $course->pivot->allocation_year = $request->allocation_year;
                     $course->pivot->save();
                     $student_courses[] = $course->pivot->course_id;
                 }
@@ -106,7 +205,7 @@ class StudentController extends Controller
         foreach($allready_assigned_courses as $assigned_course_id){
             if(!in_array($assigned_course_id, $student_courses)){
                 // we need to de-attached
-                $student->courses()->detach($assigned_course_id);
+                //$student->courses()->detach($assigned_course_id);
             }
         }
         return redirect('student?success=1&message=Student was successfully allocated courses!')->withInput() ;

@@ -6,7 +6,7 @@ function crearform(){
     $("#course_id").val("");
     $("#name").val("");
     $("#code").val("");
-    
+    $("#credit_hours").val("");
 }
 function myFunction(course_id) {
     $("#course_id").val(course_id);
@@ -44,6 +44,7 @@ $('#confirmDelete').on('show.bs.modal', function (e) {
                 //$("#course_id").val(json.id);
                 $("#name").val(json.name);
                 $("#code").val(json.code);
+                $("#credit_hours").val(json.credit_hours);
                 
                 //$.each( json, function( key, val ) {
                     //console.log( "JSON Data: " + json.id + " val "+ val );
@@ -84,8 +85,8 @@ $('#confirmDelete').on('show.bs.modal', function (e) {
                             <th style=" width: 10%;">ID</th>
                             
                             <th>Name</th>
-                            <th style=" width: 15%;">Code</th>
-                            
+                            <th style=" width: 10%;">Code</th>
+                            <th style=" width: 10%;">Credit Hour</th>
                             <th style=" width: 10%;">Status</th>
                             <th style=" width: 15%;">Edit / Delete</th>
                         </tr>
@@ -96,7 +97,7 @@ $('#confirmDelete').on('show.bs.modal', function (e) {
                             <td> <?php echo $course->id;?></td>
                             <td> <?php echo $course->name; ?></td>
                             <td> <?php echo $course->code; ?></td>
-                            
+                            <td> <?php echo $course->credit_hours; ?></td>
                             <td><?php echo $course->status; ?></td>
                             <td><button class="btn btn-danger btn-sm glyphicon glyphicon-refresh edit_button"  onclick="myFunction(<?php echo $course->id;?>)"  data-toggle="modal" data-target="#myModal" > Edit </button> &nbsp;&nbsp;
                                     <button class="btn btn-sm btn-danger" type="button" onclick="setDelete(<?php echo $course->id;?>);" data-toggle="modal" data-target="#confirmDelete" data-title="Delete User" data-message="Are you sure you want to delete this Course ?">
@@ -151,8 +152,18 @@ $('#confirmDelete').on('show.bs.modal', function (e) {
                               </td>
                           </tr>
                           <tr>
-                              
-                              <td colspan="2">
+                              <td>
+                                  <div class = "form-group">
+                                    <label for = "lastname" class = "col-md-4 control-label">
+                                         {{ Form::label('title','Credit Hours:')}}
+                                    </label>
+
+                                    <div class = "col-md-7">
+                                        {{ Form::text('credit_hours',null,array('id'=>'credit_hours','class' => 'form-control input-sm','placeholder'=>'Enter Credit Hours'))}}
+                                    </div>
+                                 </div>
+                              </td>
+                              <td>
                                   <div class = "form-group">
                                     <label for = "lastname" class = "col-md-4 control-label">
                                          {{ Form::label('title','Status:')}}

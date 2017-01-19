@@ -34,6 +34,10 @@ class Student extends Model {
                             'midterm_marks',
                             'date_of_finalterm',
                             'finalterm_marks',
+                            'sessional_assignment',
+                            'sessional_quiz',
+                            'sessional_presentation',
+                            'sessional_attendence',
                             'obtain_cgpa',
                             'obtain_grade'
                             )
