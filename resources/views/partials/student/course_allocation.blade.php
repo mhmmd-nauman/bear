@@ -4,7 +4,7 @@
         <div class="modal-content" style="height: 90%;min-height: 90%;height: auto;border-radius: 0;">
             <div class="modal-header" style=" background-color: #ac2925; color: white; font-size: 23px;">
                 <button type="button" class="close" data-dismiss="modal"><span class=" glyphicon glyphicon-remove"></span></button>
-            <h4 class="modal-title">Manage Course Allocation</h4>
+            <h4 class="modal-title">Manage Course Allocation - <span id = "allocation_semester_head_message"></span></h4>
           </div>
             <div style="width:900px;">
                 {!! Form::Open(array ('url' => '/save_course_allocation','class'=>'form-horizontal')) !!}
@@ -35,7 +35,7 @@
                                    </label>
                                 </div>
                                 <div class="col-md-3">
-                                    <select name="allocation_year" id="allocation_year" class="form-control courses_alloted" style=" width: 80px;">
+                                    <select name="allocation_year" id="allocation_year" class="form-control courses_alloted_year" style=" width: 80px;">
                                         <option value="2017" >2017</option>
                                         <option value="2016" selected>2016</option>
                                         <option value="2015">2015</option>

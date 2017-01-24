@@ -201,8 +201,7 @@ $('#confirmDelete').on('show.bs.modal', function (e) {
            
         });
         
-        
-        $(".courses_alloted").click(function(){
+        function process_course_allocation(){
             $('#checkboxes').html("");
             $('#assigned_courses').html("");
             
@@ -212,29 +211,56 @@ $('#confirmDelete').on('show.bs.modal', function (e) {
             var allocation_year = $('#allocation_year').val();
             $('#allocation_semester_message1').html(semester +" "+ allocation_year);
             $('#allocation_semester_message2').html(semester +" "+ allocation_year);
+            
+            // retrieve student and put on screen somewhere
+            $.getJSON( "student_in_json?id="+id, function( json ) {
+                $('#allocation_semester_head_message').html("");
+                $('#allocation_semester_head_message').append(json.first_name+' '+json.last_name+' - '+json.roll_number);
+            });
+            // end of student retreival
             //alert(id);
+            $('#checkboxes').html("waiting.....");
             $.getJSON( "all_student_unallocated_courses_in_json?allocatted_student_id="+id+"&semester="+semester+"&allocation_year="+allocation_year, function( json ) {
                 $('#checkboxes').html("");
+                var empty_flag = 1;
                 $.each( json, function( index, value ) {
+                    empty_flag = 0;
                     //console.log( "JSON Data: " + key + " val "+ val.id );
                     //<div class = "col-md-12"
                     $('#checkboxes').append('<div class = "col-md-4"><input type="checkbox" name="allocated_course_name[]" value="' + value.id + '" id="allocated_course_id" /> ' + value.name + '</div>');
                    // $("#program").append($('<option>').text(value.program_name).attr('value', value.id));
                   });
+                  if(empty_flag == 1){
+                      $('#checkboxes').append('<p><b> Student has been allocated all courses in study program!</b></p>');
+                  }
                  
                   
            });
            // plug allready assigned courses
            var allready_assigned_courese_list = "";
+           $('#assigned_courses').html("waiting.......");
            $.getJSON( "all_student_allocated_courses_in_json?allocatted_student_id="+id+"&semester="+semester+"&allocation_year="+allocation_year, function( json ) {
                 $('#assigned_courses').html("");
+                var empty_flag = 1;
                 $.each( json, function( index, value ) {
+                    empty_flag = 0;
                     $('#assigned_courses').append('<div class = "col-md-4"><input type="checkbox" name="allocated_course_name[]" value="' + value.id + '" id="allocated_course_id" checked /> ' + value.name + '</div>');
                     allready_assigned_courese_list = allready_assigned_courese_list+value.id+",";
                   });
                  $('#assigned_courses').append('<input type="hidden" name=allready_assigned_courses value="'+allready_assigned_courese_list+'">'); 
+                if(empty_flag == 1){
+                    $('#assigned_courses').append('<p><b> No Course Allocated for this Semester to the student!</b></p>');
+                }
            });
+        }
+        
+        $(".courses_alloted").click(function(){
+            process_course_allocation();
         });
+        $(".courses_alloted_year").change(function(){
+            process_course_allocation();
+        });
+        
         
         $(".courses_student_marks").click(function(){
             var id = $("#student_id_edit").val();
